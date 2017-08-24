@@ -2,14 +2,25 @@
 
 importFilePath <- c("C:\\Dropbox\\CODING\\R\\projects\\daily_commute\\source\\")
 importFileNames <- c("czas_dojazdu_do_pracy.csv", "czas_dojazdu_do_domu.csv")
+nameSource <- c("Work", "Home")
 
-importTimeWorkRaw <- read.csv2(paste0(importFilePath, importFileNames[1])
-                               , sep = ";", header = T)
-timeWorkSource <- as.data.frame(importTimeWorkRaw)
-colnames(importTimeWork) <- c("id", "date", "time", "status", "comment")
+getData <- function(j) {
+  
+  
+  as.data.frame(read.csv2(paste0(importFilePath, importFileNames[j])
+                          , sep = "\t", header = T))
+}
 
+makeGlobal <- function (input) {
+  assign(input, input, envir = .GlobalEnv)
+}
 
-importTimeHomeRaw <- read.csv2(paste0(importFilePath, importFileNames[2])
-                               , sep = ";", header = T)
-timeHomeSource <- as.data.frame(importTimeHomeRaw)
-colnames(timeHomeSource) <- c("id", "date", "time", "status", "comment")
+j = 1
+makeGlobal(j)
+
+for (i in nameSource) {
+  
+  assign(paste0('importTime', i, 'Raw'), getData(importFilePath, importFileNames, j))
+  
+  j = j + 1
+}
